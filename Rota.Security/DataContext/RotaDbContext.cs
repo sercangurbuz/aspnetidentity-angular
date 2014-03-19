@@ -18,20 +18,19 @@ namespace Rota.Security.DataContext
             base.OnModelCreating(modelBuilder);
 
             //User map
-            modelBuilder.Entity<IdentityUser>().ToTable("RotaUsers");
             modelBuilder.Entity<RotaUser>().ToTable("RotaUsers");
             //Roles Map
-            modelBuilder.Entity<IdentityRole>().ToTable("RotaRoles");
             modelBuilder.Entity<RotaRole>().ToTable("RotaRoles");
             //User Roles Map
-            modelBuilder.Entity<IdentityUserRole>().ToTable("RotaUserRoles");
             modelBuilder.Entity<RotaUserRole>().ToTable("RotaUserRoles");
             //User Logins Map
-            modelBuilder.Entity<IdentityUserLogin>().ToTable("RotaUserLogins");
             modelBuilder.Entity<RotaUserLogin>().ToTable("RotaUserLogins");
             //User Claims Map
-            modelBuilder.Entity<IdentityUserClaim>().ToTable("RotaUserClaims");
             modelBuilder.Entity<RotaUserClaim>().ToTable("RotaUserClaims");
+            //
+            modelBuilder.Entity<RotaUser>().HasKey<long>(l => l.Id);
+            modelBuilder.Entity<RotaRole>().HasKey<long>(r => r.Id);
+            modelBuilder.Entity<RotaUserRole>().HasKey(r => new { r.RoleId, r.UserId });
         }
     }
 }

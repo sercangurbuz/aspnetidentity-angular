@@ -8,5 +8,13 @@ namespace Rota.Security.Models
 {
     public class RotaRole : IdentityRole<long, RotaUserRole>
     {
+        public RotaRole()
+        {
+        }
+
+        public RotaRole(string roleName)
+        {
+            this.Name = roleName;
+        }
     }
 }
