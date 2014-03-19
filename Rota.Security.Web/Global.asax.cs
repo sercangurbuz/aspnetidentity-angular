@@ -13,7 +13,7 @@ namespace Rota.Security.Web
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
-            Database.SetInitializer<RotaDbContext>(new RotaDbInitializer());
+            //Database.SetInitializer<RotaDbContext>(new RotaDbInitializer());
         }
     }
 }
