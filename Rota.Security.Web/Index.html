@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <link href="css/bootstrap.css" rel="stylesheet" />
+    <title>SPA Identity Test</title>
+    <style type="text/css">
+        .main {
+            margin-top: 70px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="navbar navbar-fixed-top navbar-inverse">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#/">Asp.Net Identity - Angular</a>
+                </div>
+                <div class="navbar-collapse collapse" ng-if="">
+                    <ul class="nav navbar-nav">
+                        <li><a href="#/home">Home</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <span class="navbar-text nofloat">Hello, <a href="#" class="navbar-link" data-bind="text: name, click: manage"></a>!</span>
+                        </li>
+                        <li><a href="#" data-bind="click: logOff">Log off</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div ng-view></div>
+
+    <script src="js/vendor/angular.min.js"></script>
+    <script src="js/vendor/angular-route.min.js"></script>
+    <script src="js/vendor/jquery-1.10.2.min.js"></script>
+    <script src="js/app/app.js"></script>
+</body>
+</html>
