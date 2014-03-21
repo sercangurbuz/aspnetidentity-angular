@@ -1,22 +1,13 @@
-﻿<div class="container main">
+﻿<h4>User Edit - {{}}</h4>
+<hr />
+<div class="container main">
     <div class="row">
         <section class="col-md-5">
             <form class="form-horizontal" role="form">
-                <h4>Use a local account to log in.</h4>
-                <hr />
-                <ul class="text-danger" ng-repeat="err in errors">
-                    <li ng-bind="err"></li>
-                </ul>
                 <div class="form-group">
                     <label for="LoginUserName" class="col-md-4 control-label">User name</label>
                     <div class="col-md-8">
-                        <input type="text" id="LoginUserName" class="form-control" ng-model="username" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="LoginPassword" class="col-md-4 control-label">Password</label>
-                    <div class="col-md-8">
-                        <input type="password" id="LoginPassword" class="form-control" ng-model="password" />
+                        <input type="text" id="LoginUserName" class="form-control" ng-model="username" ng-disabled="true" />
                     </div>
                 </div>
                 <div class="form-group">

@@ -31,8 +31,6 @@ namespace Rota.Security
                 //
                 Provider = new RotaOAuthProvider("self", UserManagerFactory),
                 //
-                AuthorizeEndpointPath = new PathString("/api/Account/ExternalLogin"),
-                //
                 AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
                 //Demo icinmiş ???
                 AllowInsecureHttp = true
@@ -41,10 +39,6 @@ namespace Rota.Security
 
         public void ConfigureAuth(IAppBuilder app)
         {
-            //Login bilgisini token'i sanirim cookie'ye atiyor
-            app.UseCookieAuthentication(new CookieAuthenticationOptions());
-            //????
-            app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
             // Bearer tokens aktive et
             app.UseOAuthBearerTokens(OAuthOptions);
         }

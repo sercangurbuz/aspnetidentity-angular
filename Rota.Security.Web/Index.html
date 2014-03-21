@@ -11,7 +11,7 @@
 </head>
 <body>
     <nav>
-        <div class="navbar navbar-fixed-top navbar-inverse">
+        <div class="navbar navbar-fixed-top navbar-inverse" ng-controller="shellController">
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -21,15 +21,18 @@
                     </button>
                     <a class="navbar-brand" href="#/">Asp.Net Identity - Angular</a>
                 </div>
-                <div class="navbar-collapse collapse" ng-if="">
+                <div class="navbar-collapse collapse" ng-if="currentUser.userName">
                     <ul class="nav navbar-nav">
                         <li><a href="#/home">Home</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li>
-                            <span class="navbar-text nofloat">Hello, <a href="#" class="navbar-link" data-bind="text: name, click: manage"></a>!</span>
+                            <span class="navbar-text">Hello, <a href="#/profile" class="navbar-link">{{currentUser.userName}}</a>!</span>
                         </li>
-                        <li><a href="#" data-bind="click: logOff">Log off</a></li>
+                        <li>
+                            <a href="#/admin/users" class="navbar-link">Users</a>
+                        </li>
+                        <li><a href="#" ng-click="logoff()">Log off</a></li>
                     </ul>
                 </div>
             </div>

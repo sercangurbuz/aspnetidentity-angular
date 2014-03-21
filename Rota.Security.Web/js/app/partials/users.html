@@ -1,0 +1,26 @@
+﻿<h4>Users</h4>
+<hr />
+<div class="container main">
+    <div class="row">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>UserName</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="user in users">
+                    <td>
+                        {{user.userName}}
+                    </td>
+                    <td>
+                        <a href="#/admin/user/{{user.id}}">
+                            <i class="glyphicon glyphicon-cog"></i>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

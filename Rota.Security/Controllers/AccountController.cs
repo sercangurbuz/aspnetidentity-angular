@@ -50,59 +50,72 @@ namespace Rota.Security.Web
             };
         }
 
-        // GET api/Account/ExternalLogin
-        [OverrideAuthentication]
-        [HostAuthentication(DefaultAuthenticationTypes.ExternalCookie)]
-        [AllowAnonymous]
-        [Route("ExternalLogin", Name = "ExternalLogin")]
-        public async Task<IHttpActionResult> GetExternalLogin(string provider, string error = null)
+        [Route("Logout")]
+        public IHttpActionResult Logout()
         {
-            if (error != null)
+            Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
+            return Ok();
+        }
+
+        [Route("GetUsers")]
+        public IEnumerable<RotaUser> GetUsers()
+        {
+            return UserManager.Users;
+        }
+
+        // POST api/Account/Register
+        [AllowAnonymous]
+        [Route("Register")]
+        public async Task<IHttpActionResult> Register(RegisterBindingModel model)
+        {
+            if (!ModelState.IsValid)
             {
-                return Redirect(Url.Content("~/") + "#error=" + Uri.EscapeDataString(error));
+                return BadRequest(ModelState);
             }
 
-            if (!User.Identity.IsAuthenticated)
+            RotaUser user = new RotaUser
             {
-                return new ChallengeResult(provider, this);
+                UserName = model.UserName
+            };
+
+            IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+            IHttpActionResult errorResult = GetErrorResult(result);
+
+            if (errorResult != null)
+            {
+                return errorResult;
             }
 
-            ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(User.Identity as ClaimsIdentity);
+            return Ok();
+        }
 
-            if (externalLogin == null)
+        private IHttpActionResult GetErrorResult(IdentityResult result)
+        {
+            if (result == null)
             {
                 return InternalServerError();
             }
 
-            if (externalLogin.LoginProvider != provider)
+            if (!result.Succeeded)
             {
-                Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-                return new ChallengeResult(provider, this);
+                if (result.Errors != null)
+                {
+                    foreach (string error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error);
+                    }
+                }
+
+                if (ModelState.IsValid)
+                {
+                    // No ModelState errors are available to send, so just return an empty BadRequest.
+                    return BadRequest();
+                }
+
+                return BadRequest(ModelState);
             }
 
-            RotaUser user = await UserManager.FindAsync(new UserLoginInfo(externalLogin.LoginProvider,
-                externalLogin.ProviderKey));
-
-            bool hasRegistered = user != null;
-
-            if (hasRegistered)
-            {
-                Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-                ClaimsIdentity oAuthIdentity = await UserManager.CreateIdentityAsync(user,
-                    OAuthDefaults.AuthenticationType);
-                ClaimsIdentity cookieIdentity = await UserManager.CreateIdentityAsync(user,
-                    CookieAuthenticationDefaults.AuthenticationType);
-                AuthenticationProperties properties = RotaOAuthProvider.CreateProperties(user.UserName);
-                Authentication.SignIn(properties, oAuthIdentity, cookieIdentity);
-            }
-            else
-            {
-                IEnumerable<Claim> claims = externalLogin.GetClaims();
-                ClaimsIdentity identity = new ClaimsIdentity(claims, OAuthDefaults.AuthenticationType);
-                Authentication.SignIn(identity);
-            }
-
-            return Ok();
+            return null;
         }
 
         private IAuthenticationManager Authentication

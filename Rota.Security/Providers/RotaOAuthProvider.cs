@@ -46,18 +46,13 @@ namespace Rota.Security.Providers
                     return;
                 }
                 //Identity'yi olustur
-                ClaimsIdentity oAuthIdentity = await userManager.CreateIdentityAsync(user,
-                    context.Options.AuthenticationType);
-                ClaimsIdentity cookiesIdentity = await userManager.CreateIdentityAsync(user,
-                    CookieAuthenticationDefaults.AuthenticationType);
+                ClaimsIdentity oAuthIdentity = await userManager.CreateIdentityAsync(user,context.Options.AuthenticationType);
                 //
                 AuthenticationProperties properties = CreateProperties(user.UserName);
                 //
                 AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
                 //
                 context.Validated(ticket);
-                //
-                context.Request.Context.Authentication.SignIn(cookiesIdentity);
             }
         }
         //

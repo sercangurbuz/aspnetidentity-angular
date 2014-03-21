@@ -156,6 +156,7 @@
     <Compile Include="StartUp.cs" />
     <Compile Include="ViewModels\ExternalLoginViewModel.cs" />
     <Compile Include="ViewModels\ManageInfoViewModel.cs" />
+    <Compile Include="ViewModels\RegisterBindingModel.cs" />
     <Compile Include="ViewModels\UserInfoViewModel.cs" />
     <Compile Include="ViewModels\UserLoginInfoViewModel.cs" />
   </ItemGroup>
