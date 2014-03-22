@@ -22,17 +22,19 @@ namespace Rota.Security.Web
     public class AccountController : ApiController
     {
         public AccountController()
-            : this(StartUp.UserManagerFactory(), StartUp.OAuthOptions.AccessTokenFormat)
+            : this(StartUp.UserManagerFactory(), StartUp.RoleManagerFactory(), StartUp.OAuthOptions.AccessTokenFormat)
         {
         }
 
-        public AccountController(RotaUserManager userManager, ISecureDataFormat<AuthenticationTicket> accessTokenFormat)
+        public AccountController(RotaUserManager userManager, RotaRoleManager roleManager, ISecureDataFormat<AuthenticationTicket> accessTokenFormat)
         {
             UserManager = userManager;
+            RoleManager = roleManager;
             AccessTokenFormat = accessTokenFormat;
         }
 
         public RotaUserManager UserManager { get; private set; }
+        public RotaRoleManager RoleManager { get; private set; }
         public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
 
         // GET api/Account/UserInfo
@@ -50,6 +52,13 @@ namespace Rota.Security.Web
             };
         }
 
+        [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
+        [Route("GetUserById")]
+        public RotaUser GetUserById(long id)
+        {
+            return UserManager.FindById(id);
+        }
+
         [Route("Logout")]
         public IHttpActionResult Logout()
         {
@@ -57,10 +66,18 @@ namespace Rota.Security.Web
             return Ok();
         }
 
+        [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
         [Route("GetUsers")]
         public IEnumerable<RotaUser> GetUsers()
         {
             return UserManager.Users;
+        }
+
+        [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
+        [Route("GetRoles")]
+        public IEnumerable<RotaRole> GetRoles()
+        {
+            return RoleManager.Roles;
         }
 
         // POST api/Account/Register

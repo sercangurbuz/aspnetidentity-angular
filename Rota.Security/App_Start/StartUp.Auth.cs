@@ -18,11 +18,13 @@ namespace Rota.Security
     {
         public static OAuthAuthorizationServerOptions OAuthOptions { get; private set; }
         public static Func<RotaUserManager> UserManagerFactory { get; set; }
+        public static Func<RotaRoleManager> RoleManagerFactory { get; set; }
 
         static StartUp()
         {
             //
             UserManagerFactory = () => new RotaUserManager();
+            RoleManagerFactory = () => new RotaRoleManager();
             //
             OAuthOptions = new OAuthAuthorizationServerOptions
             {

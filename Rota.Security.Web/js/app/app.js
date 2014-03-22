@@ -24,11 +24,21 @@ angular.module("app", ["ngRoute"]).config(function ($routeProvider) {
 
 }).value('currentUser', {}).factory('userManager', ['$http', function ($http) {
     return {
-        getUsers: getUsers
+        getUsers: getUsers,
+        getRoles: getRoles,
+        getUserById: getUserById
     };
 
     function getUsers() {
         return $http.get('/api/Account/GetUsers');
+    }
+
+    function getRoles() {
+        return $http.get('/api/Account/GetRoles');
+    }
+
+    function getUserById(id) {
+        return $http.get('/api/Account/GetUserById/' + id);
     }
 }]).factory('authorization', ['$rootScope', '$http', '$location', 'currentUser',
     function ($rootScope, $http, $location, currentUser) {
@@ -100,7 +110,7 @@ angular.module("app", ["ngRoute"]).config(function ($routeProvider) {
             }
             return hash;
         }
-
+        //Register user
         function register(userName, password, confirmPassword) {
             return $http.post('/api/Account/Register', {
                 userName: userName,
@@ -134,8 +144,24 @@ angular.module("app", ["ngRoute"]).config(function ($routeProvider) {
         userManager.getUsers().then(function (result) {
             $scope.users = result.data;
         });
-    }]).controller('userController', ['$routeParams', 'userManager', function ($routeParams, userManager) {
+    }]).controller('userController', ['$scope', '$routeParams', 'userManager', function ($scope, $routeParams, userManager) {
+
         debugger;
+        userManager.getRoles().then(function (result) {
+            $scope.roles = result.data;
+        });
+
+        var id = parseInt($routeParams.id);
+
+        if (id > 0) {
+            userManager.getUserById(id).then(function (result) {
+                $scope.user = result.data;
+            });
+        }
+
+        $scope.removeRole = function (role) {
+
+        };
     }]).controller('registerController', ['$scope', 'authorization', function ($scope, authorization) {
         $scope.register = function () {
             $scope.errors = [];
